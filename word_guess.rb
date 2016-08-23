@@ -22,18 +22,18 @@ class WordGuess
       "h" => ""
     }
 
+    CSV.open("words.csv", "r").each do |line|
+      level = line[0]
+      line.delete(0)
+      @words[level] = line
+    end
+
     # players attempts allowed by difficulty
     @tries = {
       "e" => 10,
       "m" => 6,
       "h" => 4
     }
-
-    CSV.open("words.csv", "r").each do |line|
-      level = line[0]
-      line.delete(0)
-      @words[level] = line
-    end
 
     # ask the user to set the game mode
     mode = set_mode
