@@ -1,16 +1,25 @@
+require 'csv'
+
 class WordGuess
-  def initialize(debug = false)
+  def initialize(debug = true)
     # are we in debug mode?
     @debug = debug
 
     # possible words, selected at random
+    # original code before modifications
+    # @words = {
+    #   "e" => %w(dog cat bug hat cap lit kin fan fin fun tan ten tin ton),
+    #   "m" => %w(plain claim brine crime alive bride skine drive slime stein jumpy),
+    #   "h" => %w(
+    #       machiavellian prestidigitation plenipotentiary quattuordecillion
+    #       magnanimous unencumbered bioluminescent circumlocution
+    #     )
+    # }
+
     @words = {
-      "e" => %w(dog cat bug hat cap lit kin fan fin fun tan ten tin ton),
-      "m" => %w(plain claim brine crime alive bride skine drive slime stein jumpy),
-      "h" => %w(
-          machiavellian prestidigitation plenipotentiary quattuordecillion
-          magnanimous unencumbered bioluminescent circumlocution
-        )
+      "e" => "",
+      "m" => "",
+      "h" => ""
     }
 
     # players attempts allowed by difficulty
@@ -19,6 +28,12 @@ class WordGuess
       "m" => 6,
       "h" => 4
     }
+
+    CSV.open("words.csv", "r").each do |line|
+      level = line[0]
+      line.delete(0)
+      @words[level] = line
+    end
 
     # ask the user to set the game mode
     mode = set_mode
